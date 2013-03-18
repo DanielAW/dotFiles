@@ -456,10 +456,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-os.execute("dropboxd start &")
+--os.execute("dropboxd start &")
 os.execute("/usr/bin/xscreensaver -no-splash &")
 -- os.execute("gnome-power-manager &")
--- os.execute("firefox &")
+os.execute("wmname LG3D")
 os.execute("xset -dpms &")
-os.execute("nvidia-settings -a \"[gpu:0]/GPUFanControlState=1\" -a \"[fan:0]/GPUCurrentFanSpeed=40\"")
---
