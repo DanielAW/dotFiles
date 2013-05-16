@@ -13,9 +13,11 @@ alias vpnd='sudo vpnc-disconnect'
 alias vi='vim'
 alias dropboxr='/home/daniel/scripts/go_dropbox.sh'
 alias ll='ls -la'
+alias grep='grep --color=auto'
 #braucht man seit 2.6.38 nicht mehr:
 #if [ "$PS1" ] ; then  
 #   mkdir -p -m 0700 /dev/cgroup/cpu/user/$$ > /dev/null 2>&1
 #   echo $$ > /dev/cgroup/cpu/user/$$/tasks
 #   echo "1" > /dev/cgroup/cpu/user/$$/notify_on_release
 #fi
+unset SSH_ASKPASS
