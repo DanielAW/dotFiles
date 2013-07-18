@@ -1,0 +1,12 @@
+#!/bin/sh
+
+## the root window should have this color
+xsetroot -solid "#223377" -cursor_name left_ptr
+
+## these are all optional
+/etc/X11/xdm/archlinux/buttons -geometry +450+800 &
+xclock -geometry +200+800 &
+#xconsole -daemon -geometry 640x200-0+0
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+#xrandr --output LVDS-0 --mode "800x600"
