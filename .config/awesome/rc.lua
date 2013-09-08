@@ -44,7 +44,7 @@ beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "roxterm"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -121,8 +121,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "W-LAN", mywlans},
                                     { "open terminal", terminal },
                                     { "lock", "xscreensaver-command --lock"},
-                                    { "halt", "sudo /home/daniel/scripts/go_shutdown.sh shutdown"},
-                                    { "reboot", "sudo /home/daniel/scripts/go_shutdown.sh reboot"}
+                                    { "halt", "sudo /home/daniel/scripts/go_startstop.sh halt"},
+                                    { "reboot", "sudo /home/daniel/scripts/go_startstop.sh reboot"}
                                   }
                         })
 
@@ -132,6 +132,47 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
+
+--{{{ Vicious Widgets D.Wegemer
+-- Initialize widget
+cpuwidget = awful.widget.graph()
+-- Graph properties
+cpuwidget:set_width(50)
+cpuwidget:set_background_color("#494B4F")
+cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"}, 
+                    {1, "#AECF96" }}})
+
+--batwidget = widget({ type = "textbox" })
+batwidget = wibox.widget.textbox()
+wifiwidget = wibox.widget.textbox()
+netwidget = wibox.widget.textbox()
+-- Register widget
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
+vicious.register(batwidget, vicious.widgets.bat, 
+    function(widget,args)
+        local formatstring = " Bat: "..args[1]..args[2] .."%".. " "..args[3] .. " "
+        if args[2] <= 20 and args[1] == "-" then
+             return " Bat: <span color=\"red\">"..args[1]..args[2].."% </span>"..args[3].." "
+        end
+        return formatstring
+    end, 10, "BAT0")
+vicious.register(wifiwidget, vicious.widgets.wifi, 
+    function(widget,args)
+	local formatstring = "<span color=\"green\">Wifi: "..args["{ssid}"].." "..args["{rate}"].." "..args["{link}"].."</span>"
+	if args["{ssid}"] == "N/A" then
+	    return "<span color=\"red\">Wifi: "..args["{ssid}"].."</span>"
+	end
+	return formatstring
+    end , 3, "wlp3s0")
+
+vicious.register(netwidget, vicious.widgets.net, 
+    function(widget, args)
+    local formatstring = "<span color=\"green\"> :: Eth: "..args["{enp0s25 down_kb}"].."/"..args["{enp0s25 up_kb}"].."</span>"
+    if args["{enp0s25 carrier}"] == 0 then
+        return "<span color=\"red\"> :: Eth: N/A </span>"
+    end
+    return formatstring
+    end, 3)
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -210,6 +251,11 @@ for s = 1, screen.count() do
     left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
+    --Vicious Widgets hinzufuegen D.Wegemer
+    left_layout:add(cpuwidget)
+    left_layout:add(batwidget)
+    left_layout:add(wifiwidget)
+    left_layout:add(netwidget)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
@@ -457,9 +503,10 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
---os.execute("dropboxd start &")
+os.execute("dropboxd start &")
 os.execute("/usr/bin/xscreensaver -no-splash &")
 -- os.execute("gnome-power-manager &")
 os.execute("wmname LG3D")
 os.execute("xset -dpms &")
+os.execute("xbindkeys")
 os.execute("/home/daniel/scripts/lightsOn.sh 120 &")
