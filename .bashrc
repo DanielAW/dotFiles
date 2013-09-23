@@ -21,3 +21,4 @@ alias grep='grep --color=auto'
 #   echo "1" > /dev/cgroup/cpu/user/$$/notify_on_release
 #fi
 unset SSH_ASKPASS
+xhost +local:root
