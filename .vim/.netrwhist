@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/home/daniel/Projekte/pes/misc'
+let g:netrw_dirhist_2='/home/daniel/Projekte/pes'
+let g:netrw_dirhist_3='/home/daniel/Projekte/pes/information_center'
+let g:netrw_dirhist_4='/home/daniel/Projekte/pes/information_center/src'
+let g:netrw_dirhist_5='/home/daniel/Projekte/pes/misc/src'
+let g:netrw_dirhist_6='/home/daniel/Projekte/pes/misc'
+let g:netrw_dirhist_7='/home/daniel/Projekte/pes'
+let g:netrw_dirhist_8='/home/daniel/Projekte/pes/information_center'
+let g:netrw_dirhist_9='/home/daniel/Projekte/pes/information_center/src'
