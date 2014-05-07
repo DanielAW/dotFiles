@@ -1,5 +1,4 @@
 pcm.!default {
     type hw
-    card 1
-    device 7
+    card ThinkPadEC
  }
