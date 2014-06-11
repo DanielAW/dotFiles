@@ -342,8 +342,8 @@ else
   elseif s:line1 =~? '-\*-.*erlang.*-\*-'
     set ft=erlang
 
-  " RFC's
-  elseif expand('%:t') =~? 'rfc\d\+' 
+ " RFC's
+  elseif expand('%:t') =~? 'rfc\d\+'
     set ft=rfc
 
   " CVS diff
