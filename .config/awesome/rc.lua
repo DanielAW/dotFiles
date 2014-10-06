@@ -12,6 +12,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Vicious
 local vicious = require("vicious")
+vicious.contrib = require("vicious.contrib")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -146,12 +147,13 @@ cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = {
 batwidget = wibox.widget.textbox()
 wifiwidget = wibox.widget.textbox()
 netwidget = wibox.widget.textbox()
+bbswitchwidget = wibox.widget.textbox()
 -- Register widget
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 vicious.register(batwidget, vicious.widgets.bat, 
     function(widget,args)
-        local formatstring = " Bat: "..args[1]..args[2] .."%".. " "..args[3] .. " "
-        if args[2] <= 20 and args[1] == "-" then
+        local formatstring = " Bat: "..args[1]..args[2].."%".. " "..args[3] .. " "
+        if args[2] < 10  then
              return " Bat: <span color=\"red\">"..args[1]..args[2].."% </span>"..args[3].." "
         end
         return formatstring
@@ -173,6 +175,8 @@ vicious.register(netwidget, vicious.widgets.net,
     end
     return formatstring
     end, 3)
+
+vicious.register(bbswitchwidget, vicious.contrib.bbswitch, "Nvidia: $1")
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -256,6 +260,7 @@ for s = 1, screen.count() do
     left_layout:add(batwidget)
     left_layout:add(wifiwidget)
     left_layout:add(netwidget)
+    left_layout:add(bbswitchwidget)
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
@@ -346,10 +351,7 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end),
-
-    -- Lock Screen
-    awful.key({ modkey, "Control" }, "l", function() awful.util.spawn("xscreensaver-command --lock") end)
+    awful.key({ modkey }, "p", function() menubar.show() end)
 )
 
 clientkeys = awful.util.table.join(
@@ -507,9 +509,10 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 os.execute("dropboxd start &")
+os.execute("owncloud &")
 os.execute("/usr/bin/xscreensaver -no-splash &")
 -- os.execute("gnome-power-manager &")
 os.execute("wmname LG3D")
 os.execute("xset -dpms &")
 os.execute("xbindkeys")
-os.execute("/home/daniel/scripts/lightsOn.sh 120 &")
+-- os.execute("/home/daniel/scripts/lightsOn.sh 120 &")
