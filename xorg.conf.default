@@ -59,6 +59,7 @@ EndSection
 Section "Device"
     Identifier "intel"
     Driver "modesetting"
+    Option "AccelMethod" "none"
 EndSection
 
 Section "Screen"
