@@ -176,7 +176,7 @@ vicious.register(netwidget, vicious.widgets.net,
     return formatstring
     end, 3)
 
-vicious.register(bbswitchwidget, vicious.contrib.bbswitch, "Nvidia: $1")
+vicious.register(bbswitchwidget, vicious.contrib.bbswitch, "Nvidia: $1 ")
 
 -- {{{ Wibox
 -- Create a textclock widget
@@ -430,7 +430,8 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = awful.client.focus.filter,
                      keys = clientkeys,
-                     buttons = clientbuttons } },
+                     buttons = clientbuttons,
+                     size_hints_honor = false } },
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
@@ -506,10 +507,20 @@ client.connect_signal("manage", function (c, startup)
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+-- client.connect_signal("focus",
+--        function(c)
+--                if c.maximized_horizontal == true and c.maximized_vertical == true then
+--                        c.border_width = "0"
+--                        c.border_color = beautiful.border_focus
+--                else
+--                        c.border_width = beautiful.border_width
+--                        c.border_color = beautiful.border_focus
+--                end
+--        end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-os.execute("dropboxd start &")
-os.execute("owncloud &")
+os.execute("dropbox &")
+--os.execute("owncloud &")
 os.execute("/usr/bin/xscreensaver -no-splash &")
 -- os.execute("gnome-power-manager &")
 os.execute("wmname LG3D")
