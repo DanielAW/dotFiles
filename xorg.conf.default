@@ -4,7 +4,7 @@
 Section "ServerLayout"
     Identifier     "Layout0"
     #UseDedicatedEx
-    Screen       0  "nvidia
+    Screen       0  "nvidia"
     #UseOnboard
     Screen       "intel"
     #UseDedicatedIn
