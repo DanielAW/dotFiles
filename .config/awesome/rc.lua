@@ -11,7 +11,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- Enable VIM help for hotkeys widget when client with matching name is opened:
-require("awful.hotkeys_popup.keys.vim")
+require("awful.hotkeys_popup.keys")
 -- Vicious
 local vicious = require("vicious")
 vicious.contrib = require("vicious.contrib")
@@ -43,7 +43,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+-- beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
+beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "roxterm"
@@ -481,7 +482,12 @@ for i = 1, 9 do
 end
 
 clientbuttons = gears.table.join(
-    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+    awful.button({ }, 
+        1, 
+        function (c) 
+            client.focus = c; 
+            c:raise() 
+        end),
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
@@ -502,10 +508,10 @@ awful.rules.rules = {
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
-     }, 
-     callback = function(c)
-        c.maximized, c.maximized_vertical, c.maximized_horizontal = false, false, false
-     end,
+     },
+     --callback = function(c)
+     --   c.maximized, c.maximized_vertical, c.maximized_horizontal = false, false, false
+     --end,
     },
 
     -- Floating clients.
@@ -608,6 +614,14 @@ client.connect_signal("mouse::enter", function(c)
     if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
         and awful.client.focus.filter(c) then
         client.focus = c
+    end
+end)
+
+-- D.Wegemer ugl workaround against bug #1692
+client.connect_signal("request::geometry", function(c)
+    if client.focus then
+        client.focus.ignore_border_width = false
+        client.focus.border_width = 1
     end
 end)
 
